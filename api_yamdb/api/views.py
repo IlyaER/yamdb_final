@@ -215,8 +215,7 @@ class CommentViewSet(ModelViewSet):
             )
         except TypeError:
             TypeError('Нет ревью на это произведение')
-        queryset = review.comments.all()
-        return queryset
+        return review.comments.all()
 
     def perform_create(self, serializer):
         try:

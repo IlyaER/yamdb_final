@@ -1,5 +1,5 @@
 # Проект YaMDb
-
+[![Django-app workflow](https://github.com/IlyaER/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)](https://github.com/IlyaER/yamdb_final/actions/workflows/yamdb_workflow.yml)
 
 ## Описание
 

@@ -1,5 +1,5 @@
 FROM python:3.7-slim
-LABEL author='ilyarog' version=1.10
+LABEL author='ilyarog' version=1.11
 RUN mkdir /app
 COPY ./api_yamdb /app
 RUN pip3 install -r /app/requirements.txt --no-cache-dir

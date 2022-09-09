@@ -48,7 +48,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-20.04
-    needs: build_and_push_to_docker_hub
+    needs: build_and_push_to_dockerhub
     steps:
       - name: executing remote ssh commands to deploy
         uses: appleboy/ssh-action@master
@@ -61,3 +61,14 @@ jobs:
             #остановка всех контейнеров
             sudo docker stop $(sudo docker ps -a -q)
             sudo docker run --rm -d -p 5000:5000 ilyarog/api_yamdb
+
+  send_message:
+    runs-on: ubuntu-20.04
+    needs: deploy
+    steps:
+      - name: send message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: ${{ github.workflow }} успешно выполнен!

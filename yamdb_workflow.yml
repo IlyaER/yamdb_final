@@ -27,6 +27,7 @@ jobs:
 
   build_and_push_to_dockerhub:
     name: Push Docker image to Docker Hub
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-20.04
     needs: tests
 
@@ -45,6 +46,7 @@ jobs:
         with:
           push: true
           tags: ilyarog/api_yamdb:latest
+          file: api_yamdb/Dockerfile
 
   deploy:
     runs-on: ubuntu-20.04
@@ -57,10 +59,17 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull ilyarog/api_yamdb
-            #остановка всех контейнеров
-            sudo docker stop $(sudo docker ps -a -q)
-            sudo docker run --rm -d -p 5000:5000 ilyarog/api_yamdb
+            sudo docker-compose stop
+            sudo docker-compose rm web
+            touch .env
+            echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
+            echo DB_NAME=${{ secrets.DB_NAME }} >> .env
+            echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> .env
+            echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> .env
+            echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> .env
+            echo DB_HOST=${{ secrets.DB_HOST }} >> .env
+            echo DB_PORT=${{ secrets.DB_PORT }} >> .env
+            sudo docker-compose up -d
 
   send_message:
     runs-on: ubuntu-20.04

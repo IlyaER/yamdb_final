@@ -55,6 +55,7 @@ docker-compose up -d
 
 Загрузка тестовых данных в базу штатным средством приложения
 ```
+docker-compose exec web sh -c "chmod +x fixtures/migrate.sh"
 docker-compose exec web sh -c "fixtures/migrate.sh"
 ```
 
